@@ -17,8 +17,8 @@
         replace: 'UseDNS no'
         backup: no
       register: ssh_dns_conf
-  notify:
-  - restart sshd
+      notify:
+      - restart sshd
 
 - name: Installing Fail2ban
   block:
@@ -36,12 +36,8 @@
       - fail2ban
       - jail
     register: template_files
-
-  - name: Restart the fail2ban service
-    service:
-      name: fail2ban
-      state: restarted
-    when: template_files.changed
+    notify:
+      - restart fail2ban
 
 - name: System Tweaks
   block:
